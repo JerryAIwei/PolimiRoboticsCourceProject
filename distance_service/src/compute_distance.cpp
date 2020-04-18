@@ -5,7 +5,7 @@
 bool distance(distance_service::ComputeDistance::Request  &req,
          distance_service::ComputeDistance::Response &res)
 {
-  res.distance = sqrt(pow(req.carX-req.obsX,2)+pow(req.carY-req.obsY,2)+pow(req.carY-req.obsY,2));
+  res.distance = sqrt(pow(req.carX-req.obsX,2)+pow(req.carY-req.obsY,2)+pow(req.carZ-req.obsZ,2));
   ROS_INFO("request: carX=%f, carY=%f, carZ=%f,", (double)req.carX, (double)req.carY,(double)req.carZ);
   ROS_INFO("request: obsX=%f, obsY=%f, obsZ=%f,", (double)req.obsX, (double)req.obsY,(double)req.obsZ);
   ROS_INFO("sending back response: [%f]", (double)res.distance);

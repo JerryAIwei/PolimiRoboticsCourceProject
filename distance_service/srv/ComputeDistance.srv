@@ -5,4 +5,4 @@ float64 obsX
 float64 obsY
 float64 obsZ
 ---
-int64 distance
+float64 distance
