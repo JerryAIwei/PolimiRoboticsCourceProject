@@ -208,7 +208,12 @@ public:
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "Lla2odomPublisher");
-    Lla2tfOdomPublisher lla2tfOdomPublisher;
+    std::string msgPath = argv[1];
+    std::string name = argv[2];
+    double latitude_init = atof(argv[3]);
+    double longitude_init = atof(argv[4]);
+    double h0 = atof(argv[5]);
+    Lla2tfOdomPublisher lla2tfOdomPublisher(msgPath, name, latitude_init, longitude_init, h0);
     ros::spin();
     return 0;
 }

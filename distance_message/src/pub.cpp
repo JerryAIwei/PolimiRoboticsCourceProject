@@ -5,14 +5,14 @@
 #include <message_filters/sync_policies/exact_time.h>
 #include <message_filters/sync_policies/approximate_time.h>
 #include <nav_msgs/Odometry.h>
-#include "custom_messages/Status.h"
+#include "distance_message/Status.h"
 #include "distance_service/ComputeDistance.h"
 
 #include <sstream>
 #include <memory>
 
 class DistancePublisher{
-    typedef message_filters::sync_policies::ApproximateTime<nav_msgs::Odometry,
+    typedef message_filters::sync_policies::ExactTime<nav_msgs::Odometry,
     nav_msgs::Odometry> MySyncPolicy;
 private:
     ros::NodeHandle n;
@@ -24,6 +24,8 @@ private:
     ros::ServiceClient client;
     double safeDistance;
     double crashDistance;
+    std::string car;
+    std::string obs;
 
     void callback(const nav_msgs::OdometryConstPtr& msg1, const nav_msgs::OdometryConstPtr& msg2)
     {
@@ -38,23 +40,23 @@ private:
         srv.request.obsZ = msg2->pose.pose.position.z;
         if(client.call(srv)){
             double distance = srv.response.distance;
-            custom_messages::Status msg;
+            distance_message::Status msg;
             msg.distance = distance;
             if(distance>safeDistance) msg.status = "Safe";
-            else if(distance>safeDistance<crashDistance)
+            else if(distance<crashDistance)
                 msg.status = "Crash";
             else msg.status = "Unsafe";
             pub.publish(msg);
         }
     }
 public:
-    DistancePublisher(double safeDistance = 5.0, double crashDistance = 1.0)
-    :safeDistance(safeDistance),crashDistance(crashDistance)
+    DistancePublisher(std::string car, std::string obs, double safeDistance = 5.0, double crashDistance = 1.0)
+    :car(car), obs(obs), safeDistance(safeDistance), crashDistance(crashDistance)
     {
-        pub = n.advertise<custom_messages::Status>("status", 1000);
+        pub = n.advertise<distance_message::Status>("status", 1000);
         client = n.serviceClient<distance_service::ComputeDistance>("compute_distance");
-        car_sub.subscribe(n, "topic1",5);
-        obs_sub.subscribe(n, "topic2",5);
+        car_sub.subscribe(n, "/" + car + "_odom",5);
+        obs_sub.subscribe(n, "/" + obs + "_odom",5);
         syncPtr = std::make_unique<message_filters::Synchronizer<MySyncPolicy>>(MySyncPolicy(10), car_sub, obs_sub);
         syncPtr->registerCallback(boost::bind(&DistancePublisher::callback,this, _1, _2));
     }
@@ -64,8 +66,7 @@ int main(int argc, char **argv)
 {
 
 	ros::init(argc, argv, "check status");
-    DistancePublisher distancePublisher;
-
+    DistancePublisher distancePublishe(argv[1], argv[2]);
   	ros::spin();
 
   	return 0;

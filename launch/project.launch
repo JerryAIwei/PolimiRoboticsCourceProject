@@ -1,0 +1,17 @@
+<launch>
+    <arg name="msgPathCar" value="/swiftnav/front/gps_pose" />
+    <arg name="msgPathObs" value="/swiftnav/obs/gps_pose" />
+    <arg name="car" value="car"/>
+    <arg name="obs" value="obs"/>
+    <arg name="latitude_init" value="45.6311926152"/>
+    <arg name="longitude_init" value="9.2947495255"/>
+    <arg name="h0" value="231.506675163"/>
+<node pkg="distance_service" type = "compute_distance" name = "compute_distance"/>
+<node pkg="distance_message" type = "pub_status" name = "pub_status"  args="$(arg car) $(arg obs)"/>
+<node pkg="distance_message" type = "status_sub" name = "status_sub" output="screen"/>
+<node pkg="lla2tfodom" type = "lla2tfodom" name = "Obs_lla2tfodom" args="$(arg msgPathObs) $(arg obs) $(arg latitude_init) $(arg longitude_init) $(arg h0)" />
+<node pkg="lla2tfodom" type = "lla2tfodom" name = "Car_lla2tfodom" args="$(arg msgPathCar) $(arg car) $(arg latitude_init) $(arg longitude_init) $(arg h0)"/>
+<node name="rosplay" pkg="rosbag" type="play" args="$(find lla2tfodom)/../data/project.bag -r 3" />
+
+</launch>
+
