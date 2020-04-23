@@ -119,8 +119,8 @@ public:
                         float latitude_init = 45.6311926152, float longitude_init = 9.2947495255,
                         float h0 = 231.506675163)
             : msgPath(msgPath), name(name), latitude_init(latitude_init), longitude_init(longitude_init), h0(h0) {
-        odom_pub = n.advertise<nav_msgs::Odometry>(name + "_odom", 50);
-        odom_pub_debug = n.advertise<nav_msgs::Odometry>(name + "_odom_debug", 50);
+        odom_pub = n.advertise<nav_msgs::Odometry>(name + "_odom", 1000);
+        odom_pub_debug = n.advertise<nav_msgs::Odometry>(name + "_odom_debug", 1000);
         current_time = ros::Time::now();
         last_time = ros::Time::now();
         sub = n.subscribe(msgPath, 1000, &Lla2tfOdomPublisher::callback, this);
@@ -192,9 +192,9 @@ public:
             odom_debug.twist.twist.linear.y = 0.0 / 0.0;
             odom_debug.twist.twist.linear.z = 0.0 / 0.0;
         } else {
-            odom_debug.pose.pose.position.x = xEast;
-            odom_debug.pose.pose.position.y = yNorth;
-            odom_debug.pose.pose.position.z = zUp;
+            odom_debug.pose.pose.position.x = xEast/100;
+            odom_debug.pose.pose.position.y = yNorth/100;
+            odom_debug.pose.pose.position.z = zUp/100;
 
             odom_debug.twist.twist.linear.x = (xEast - lastx) / dt;
             odom_debug.twist.twist.linear.y = (yNorth - lasty) / dt;

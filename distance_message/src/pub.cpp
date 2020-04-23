@@ -55,8 +55,8 @@ public:
     {
         pub = n.advertise<distance_message::Status>("status", 1000);
         client = n.serviceClient<distance_service::ComputeDistance>("compute_distance");
-        car_sub.subscribe(n, "/" + car + "_odom",5);
-        obs_sub.subscribe(n, "/" + obs + "_odom",5);
+        car_sub.subscribe(n, "/" + car + "_odom",1000);
+        obs_sub.subscribe(n, "/" + obs + "_odom",1000);
         syncPtr = std::make_unique<message_filters::Synchronizer<MySyncPolicy>>(MySyncPolicy(10), car_sub, obs_sub);
         syncPtr->registerCallback(boost::bind(&DistancePublisher::callback,this, _1, _2));
     }
