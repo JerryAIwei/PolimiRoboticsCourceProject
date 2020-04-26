@@ -25,10 +25,10 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(compute_distance src/compute_distance.cpp)
 target_link_libraries(compute_distance ${catkin_LIBRARIES})
-add_dependencies(compute_distance ${catkin_EXPORTED_TARGETS})
+add_dependencies(compute_distance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 
 add_executable(client src/client.cpp)
 target_link_libraries(client ${catkin_LIBRARIES})
-add_dependencies(client ${catkin_EXPORTED_TARGETS})
+add_dependencies(client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
