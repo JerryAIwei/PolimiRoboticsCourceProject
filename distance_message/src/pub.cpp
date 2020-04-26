@@ -8,7 +8,7 @@
 #include "distance_message/Status.h"
 #include "distance_service/ComputeDistance.h"
 #include <dynamic_reconfigure/server.h>
-#include <dynamic_distance/dynamic_distanceConfig.h>
+#include <distance_message/dynamic_distanceConfig.h>
 
 #include <sstream>
 #include <memory>
@@ -29,7 +29,7 @@ private:
     double crashDistance;
     std::string car;
     std::string obs;
-    dynamic_reconfigure::Server<dynamic_distance::dynamic_distanceConfig> server;
+    dynamic_reconfigure::Server<distance_message::dynamic_distanceConfig> server;
 
     void callback(const nav_msgs::OdometryConstPtr &msg1, const nav_msgs::OdometryConstPtr &msg2)
     {
@@ -57,7 +57,7 @@ private:
         }
     }
 
-    void drCallback(dynamic_distance::dynamic_distanceConfig &config, uint32_t level)
+    void drCallback(distance_message::dynamic_distanceConfig &config, uint32_t level)
     {
         ROS_INFO("Reconfigure Request: %f %f",
                  config.safeDistance, config.crashDistance);
@@ -76,7 +76,7 @@ public:
         syncPtr = std::make_unique<message_filters::Synchronizer<MySyncPolicy>>(MySyncPolicy(10), car_sub, obs_sub);
         syncPtr->registerCallback(boost::bind(&DistancePublisher::callback, this, _1, _2));
 
-        dynamic_reconfigure::Server<dynamic_distance::dynamic_distanceConfig>::CallbackType f;
+        dynamic_reconfigure::Server<distance_message::dynamic_distanceConfig>::CallbackType f;
         f = boost::bind(&DistancePublisher::drCallback, this, _1, _2);
         server.setCallback(f);
     }
