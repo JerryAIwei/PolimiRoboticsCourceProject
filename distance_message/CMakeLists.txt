@@ -32,11 +32,11 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 
 add_executable(pub_status src/pub.cpp)
-add_dependencies(pub_status ${PROJECT_NAME}_gencfg custom_messages_generate_messages_cpp)
+add_dependencies(pub_status ${PROJECT_NAME}_gencfg custom_messages_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(pub_status ${catkin_LIBRARIES})
 
 
-#add_executable(status_sub src/sub.cpp)
-#add_dependencies(status_sub custom_messages_generate_messages_cpp)
-#target_link_libraries(status_sub ${catkin_LIBRARIES})
+add_executable(status_sub src/sub.cpp)
+add_dependencies(status_sub custom_messages_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(status_sub ${catkin_LIBRARIES})
 
