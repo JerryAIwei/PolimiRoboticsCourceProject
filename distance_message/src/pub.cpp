@@ -51,8 +51,10 @@ private:
                 msg.status = "Safe";
             else if (distance < crashDistance)
                 msg.status = "Crash";
-            else
+            else if(distance <= safeDistance&&distance >= crashDistance)
                 msg.status = "Unsafe";
+	    else 
+		msg.status = "NAN";
             pub.publish(msg);
         }
     }

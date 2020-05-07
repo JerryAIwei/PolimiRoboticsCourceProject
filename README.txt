@@ -96,13 +96,28 @@ This will start all the necessary nodes and play the ros bag of the data as well
 
 You will see the output like 
 ```[ INFO] [1588785320.187441988]: Distance: 6.272685, status: Safe.``` 
-when there are data from both car and obstacle.
+(Please wait for few seconds to see the output, since there is no data from obs at the beginning)
 
-You can run ``` rosrun rqt_reconfigure rqt_reconfigure ``` to dynamicly reconfigure the parameters of the safe distance and crash distance between the car and the obstacle. The crash distance should be less than the safe distance. The default safe distance is 5m and the default crash distance is 1m as required by the project.
+You can run
+```rostopic echo car_odom```
+```rostopic echo obs_odom```
+in new terminals to see the Odom for car and obstacle.
+
+You can run
+```rostopic echo tf```
+in new terminals to see the TF for car and obstacle
+
+You can run 
+``` rosrun rqt_reconfigure rqt_reconfigure ``` 
+to dynamicly reconfigure the parameters of the safe distance and crash distance between the car and the obstacle. The crash distance should be less than the safe distance. The default safe distance is 5m and the default crash distance is 1m as required by the project.
 
 # Info you think are important/interesting:
 
 ---catkin_make may not always compile the code in the right way, we should add ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} in some CmakeLists.txt to make sure it compile some code first as the dependency of other code.
+
+---when we receive 0,0,0 from GPS, we will output ```[ WARN] [1588864946.484633583]: LOSE GPS!```, then output ```[ INFO] [1588864946.457859507]: Distance: -nan, status: NAN.```
+
+---In order to view the odometry in Rviz, we also output a car_debug and obs_debug odometry with odom=odom/100.0.
 
 
 

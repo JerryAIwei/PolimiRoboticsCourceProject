@@ -155,7 +155,6 @@ public:
             odom.twist.twist.linear.x = 0.0 / 0.0;
             odom.twist.twist.linear.y = 0.0 / 0.0;
             odom.twist.twist.linear.z = 0.0 / 0.0;
-            ROS_WARN("GET LOSE GPS");
         } else {
             odom.pose.pose.position.x = xEast;
             odom.pose.pose.position.y = yNorth;
