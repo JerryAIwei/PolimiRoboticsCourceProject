@@ -53,7 +53,7 @@ Jiaying Lyu 10735282
 # Name of the parameter:
 
 In launch file, there are latitude_init, longitude_init and h0, which represents the zero point of the onversion from LLA to ENU.
-"car" and "msgPathCar" represents the name of the car objectt and the topic name of the car GPS position provided by the ros bag file.
+"car" and "msgPathCar" represents the name of the car object and the topic name of the car GPS position provided by the ros bag file.
 Similarly, "obs" and "msgPathObs" represents the name of the obstacle objectt and the topic name of the obstacle GPS position provided by the ros bag file.
  
 # Structure of the tf tree:
