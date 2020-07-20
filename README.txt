@@ -1,7 +1,7 @@
 Team member:
-Shaoxun Xu 10730116
-Aiwei Yin 10730328
-Jiaying Lyu 10735282
+Shaoxun Xu
+Aiwei Yin
+Jiaying Lyu
 
 # Description of the files inside the archive:
 
